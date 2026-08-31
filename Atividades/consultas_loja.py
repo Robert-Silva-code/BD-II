@@ -8,13 +8,8 @@ Session = sessionmaker(bind=engine)
 
 
 with Session() as session:
-    '''
-    # hardware = Categoria(nome="Hardware")
-    # monitor = Produto(nome="AOC", codigo_barras="841655631", preco=400, categoria_id=1)
+    #notebook = Produto(nome="Notebook Positivo", codigo_barras="849755633", preco=400, categoria_id=1, em_estoque=False)
 
-    # session.add(hardware)
-    # session.add(monitor)
-    '''
     query = select(Produto)
 
     produtos = session.execute(query).scalars().all()
@@ -29,4 +24,8 @@ with Session() as session:
     for produto in produtos:
         print(produto)
 
+    filtro = session.query(Produto).filter_by(em_estoque=True).all()
+
+    print(filtro)
     session.commit()
+

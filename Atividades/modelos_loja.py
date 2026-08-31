@@ -14,7 +14,7 @@ class Produto(Base):
     categoria_id = Column(Integer,ForeignKey('categorias.id'),nullable=False)
 
     def __repr__(self):
-        return f"Produto(id={self.id}, Nome='{self.nome}', Preço='{self.preco}', Está em estoque:'{self.em_estoque}')"
+        return f"Produto(id={self.id} | Nome='{self.nome}' | Preço='{self.preco}' | Está em estoque:'{self.em_estoque}')"
 
 class Categoria(Base):
     __tablename__ = 'categorias'
