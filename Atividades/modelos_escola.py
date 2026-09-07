@@ -13,7 +13,7 @@ class Aluno(Base):
     turma_id = Column(Integer, ForeignKey('turmas.id'), nullable=True)
 
     def __repr__(self):
-        return f"Aluno:(Nome=${self.nome}, Matrícula=${self.matricula})"
+        return f"Aluno:(Nome={self.nome}, Matrícula={self.matricula})"
 
 
 class Turma(Base):
@@ -21,3 +21,6 @@ class Turma(Base):
     id = Column(Integer, primary_key=True)
     nome_turma = Column(String(50), nullable=False)
     ano_letivo = Column(Integer, nullable=False)
+
+    def __repr__(self):
+        return f"Nome da turma: '{self.nome_turma}'"

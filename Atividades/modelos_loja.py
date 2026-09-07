@@ -20,3 +20,4 @@ class Categoria(Base):
     __tablename__ = 'categorias'
     id = Column(Integer, primary_key=True)
     nome = Column(String(50), nullable=False, unique=True)
+
