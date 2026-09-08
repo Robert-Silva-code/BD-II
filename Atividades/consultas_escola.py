@@ -9,11 +9,9 @@ Session = sessionmaker(bind=engine)
 
 
 with Session() as session:
-    """
-    terceiro = Turma(nome_turma="3° Ano A", ano_letivo=2)
-    jorge = Aluno(nome="Jorge", matricula="202614550024", email="jorge@escola.com", turma_id=3, data_nascimento=datetime(2006, 4, 11),)
-    """
+    aluno = Aluno(nome="Miguel", matricula="20271544", email="Miguel@email.com", turma_id=3, data_nascimento=datetime(2009, 1, 4),)
 
+    session.add(aluno)
     query = select(Aluno)
     aluno_especifico = session.query(Aluno).get(1)
 

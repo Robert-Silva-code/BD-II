@@ -8,8 +8,8 @@ Session = sessionmaker(bind=engine)
 
 
 with Session() as session:
-    #gabinete = Produto(nome="Gabinete Gamer", codigo_barras="8497745733", preco=500, categoria_id=1, em_estoque=False)
-
+    #jogo = Produto(nome="Rain World", codigo_barras="5661954898", preco=59.99, categoria_id=3, em_estoque=True)
+    #session.add(jogo)
     query = select(Produto)
 
     produtos = session.execute(query).scalars().all()
@@ -23,15 +23,16 @@ with Session() as session:
 
     #for produto in produtos:
         #print(produto)
-
+    """
+    
     filtro = session.query(Produto).filter_by(em_estoque=True).all()
 
     filtro_avancado = session.query(Produto).filter(Produto.preco > 100, Produto.nome.like('%gamer')).first()
 
-    # if filtro_avancado:
-    #     print(f"Encontramos: {filtro_avancado.nome}")
-    # else:
-    #     print("Produto não encontrado.")
+    if filtro_avancado:
+        print(f"Encontramos: {filtro_avancado.nome}")
+    else:
+        print("Produto não encontrado.")
 
     # print(filtro)
 
@@ -41,6 +42,23 @@ with Session() as session:
 
     for categoria in produto_com_categoria:
         print(f"A categoria de nome: '{categoria.nome}' possui produtos")
+    """
+    tamanho_pagina = 5
+    pagina_atual = 2
+
+
+    total_produtos = session.query(Produto).count()
+
+    produtos_unicos = session.query(Produto.categoria_id).distinct().all()
+
+    produtos_paginados = session.query(Produto)\
+        .order_by(Produto.preco.desc())\
+        .limit(tamanho_pagina)\
+        .offset((pagina_atual - 1) * tamanho_pagina)\
+        .all()
+    print(total_produtos)
+    print(produtos_unicos)
+    print(produtos_paginados)
 
 
 
