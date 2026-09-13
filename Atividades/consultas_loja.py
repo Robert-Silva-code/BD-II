@@ -56,9 +56,13 @@ with Session() as session:
         .limit(tamanho_pagina)\
         .offset((pagina_atual - 1) * tamanho_pagina)\
         .all()
-    print(total_produtos)
-    print(produtos_unicos)
-    print(produtos_paginados)
+
+
+    produtos_com_categoria = session.query(Produto).join(Categoria).first() #Retornar para esse ponto depois, não entendi o join direito, talvez perguntar mais a Jales?
+
+
+
+    produtos_agrupados = session.query(Produto.categoria_id).group_by(categora_id) #Procurar mais depois
 
 
 

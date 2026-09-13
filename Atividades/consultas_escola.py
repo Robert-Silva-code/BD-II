@@ -9,9 +9,9 @@ Session = sessionmaker(bind=engine)
 
 
 with Session() as session:
-    aluno = Aluno(nome="Miguel", matricula="20271544", email="Miguel@email.com", turma_id=3, data_nascimento=datetime(2009, 1, 4),)
+    #aluno = Aluno(nome="JuuNana", matricula="202720400017", email="JuuNana@email.com", turma_id=3, data_nascimento=datetime(2009, 10, 7),)
 
-    session.add(aluno)
+    #session.add(aluno)
     query = select(Aluno)
     aluno_especifico = session.query(Aluno).get(1)
 
@@ -51,5 +51,21 @@ with Session() as session:
         print("A turma possui alunos")
     else:
         print("A turma não possui alunos.")
+
+    tamanho_pagina = 10
+    pagina_atual = 3
+
+
+    total_alunos = session.query(Aluno).count()
+
+    ordenados = session.query(Aluno).order_by(Aluno.nome.asc()).all()
+
+    alunos_paginados = session.query(Aluno)\
+        .limit(tamanho_pagina)\
+        .offset((pagina_atual - 1) * tamanho_pagina)\
+        .all()
+    print(f"O total de alunos é igual a {total_alunos}")
+    print(ordenados)
+    print(alunos_paginados)
 
     session.commit()
