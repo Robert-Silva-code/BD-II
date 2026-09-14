@@ -9,7 +9,7 @@ Session = sessionmaker(bind=engine)
 
 with Session() as session:
     #jogo = Produto(nome="Rain World", codigo_barras="5661954898", preco=59.99, categoria_id=3, em_estoque=True)
-    #session.add(jogo)
+    #session.add(sem_ideia)
     query = select(Produto)
 
     produtos = session.execute(query).scalars().all()
@@ -58,11 +58,19 @@ with Session() as session:
         .all()
 
 
-    produtos_com_categoria = session.query(Produto).join(Categoria).first() #Retornar para esse ponto depois, não entendi o join direito, talvez perguntar mais a Jales?
+    produtos_com_categoria = session.query(Produto.nome, Categoria.nome).join(Categoria).all()
 
+    for nome_produto, nome_categoria in produtos_com_categoria:
+        print(f"Produto - {nome_produto} | Categoria - {nome_categoria}")
 
+    categoria_orfa = session.query(Categoria)\
+    .outerjoin(Produto, Categoria.id == Produto.categoria_id)\
+    .filter(Produto.id == None)\
+    .all()
 
-    produtos_agrupados = session.query(Produto.categoria_id).group_by(categora_id) #Procurar mais depois
+    for categoria in categoria_orfa:
+        print(categoria.nome)
+
 
 
 
