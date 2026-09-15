@@ -1,6 +1,6 @@
 from datetime import date, datetime
 from modelos_escola import Aluno, Turma
-from sqlalchemy import create_engine, select, or_, exists
+from sqlalchemy import create_engine, select, or_, exists, func
 from sqlalchemy.orm import sessionmaker
 
 engine = create_engine("sqlite:///escola.db", echo=True)
@@ -9,7 +9,7 @@ Session = sessionmaker(bind=engine)
 
 
 with Session() as session:
-    #aluno = Aluno(nome="JuuNana", matricula="202720400017", email="JuuNana@email.com", turma_id=3, data_nascimento=datetime(2009, 10, 7),)
+    #aluno = Aluno(nome="Senior", matricula="202720400041", email="Senior@email.com", turma_id=3, data_nascimento=datetime(2008, 12, 12),)
 
     #session.add(aluno)
     query = select(Aluno)
@@ -81,7 +81,6 @@ with Session() as session:
     for aluno, turma in aluno_turma:
         nome_turma = turma.nome_turma if turma else "Sem Turma"
         print(f"Aluno: {aluno.nome} | Turma: {nome_turma}")
-    """
 
 
     aluno_sem_turma = session.query(Aluno)\
@@ -92,4 +91,37 @@ with Session() as session:
 
     for aluno in aluno_sem_turma:
         print(aluno.nome)
+
+
+    relatorio_turma = session.query(
+        Aluno.turma_id,
+        func.count(Aluno.id)
+        ).group_by(Aluno.turma_id)\
+        .having(func.count(Aluno.id) > 30)\
+        .all()
+
+    for turma, total_aluno in relatorio_turma:
+        print(f"A turma de Id {turma} tem {total_aluno} alunos")
+    """
+
+
+    consulta_aluno = session.query(Aluno).filter(
+        Aluno.turma_id == 3,
+        Aluno.data_nascimento != None
+        )
+
+    calculo_idade = consulta_aluno.add_columns(
+        (date.today() - Aluno.data_nascimento).label('idade_aproximada')
+    )
+
+    #calculo_idade = consulta_aluno.add_columns(
+    #    (func.extract('year', func.current_date()) - func.extract('year', Aluno.data_nascimento)).label('idade_aproximada')
+    #)
+
+
+
+    for aluno, idade in calculo_idade.all():
+        print(f"Nome: {aluno.nome} | Data de nascimento: {aluno.data_nascimento} | Idade aproximada: {idade}")
+
+
     session.commit()

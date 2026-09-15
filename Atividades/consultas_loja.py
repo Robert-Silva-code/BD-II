@@ -8,8 +8,9 @@ Session = sessionmaker(bind=engine)
 
 
 with Session() as session:
-    #jogo = Produto(nome="Rain World", codigo_barras="5661954898", preco=59.99, categoria_id=3, em_estoque=True)
-    #session.add(sem_ideia)
+
+    jogo = Produto(nome="Madden 29", codigo_barras="97912654", preco=380, categoria_id=3, em_estoque=True)
+    #session.add(jogo)
     query = select(Produto)
 
     produtos = session.execute(query).scalars().all()
@@ -69,7 +70,6 @@ with Session() as session:
 
     for categoria in categoria_orfa:
         print(categoria.nome)
-    """
 
     relatorio_vendas = session.query(
         Produto.categoria_id,
@@ -81,7 +81,17 @@ with Session() as session:
 
     for id_categoria, media_preco , estoque in relatorio_vendas:
         print(f"Id Categoria: {id_categoria} | Estoque: {estoque} | Média de preços: {media_preco:.2f}")
-    
+    """
 
 
+
+    consulta_estoque = session.query(Produto).filter(Produto.em_estoque == True)
+
+    black_friday = consulta_estoque.add_columns(
+        (Produto.preco),
+        (Produto.preco * 0.85).label('preco_promocional')
+    )
+
+    for produto, preco_original, preco_promocional in black_friday.all():
+        print(f"Produto: {produto.nome} | Preço original: {preco_original:.2f} | Preço Promocial: {preco_promocional:.2f}")
     session.commit()
