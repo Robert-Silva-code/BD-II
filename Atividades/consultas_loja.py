@@ -1,5 +1,5 @@
 from modelos_loja import Produto, Categoria
-from sqlalchemy import create_engine, select, exists
+from sqlalchemy import create_engine, select, exists, func
 from sqlalchemy.orm import sessionmaker
 
 engine = create_engine("sqlite:///loja_virtual.db", echo=True)
@@ -42,7 +42,6 @@ with Session() as session:
 
     for categoria in produto_com_categoria:
         print(f"A categoria de nome: '{categoria.nome}' possui produtos")
-    """
     tamanho_pagina = 5
     pagina_atual = 2
 
@@ -70,9 +69,19 @@ with Session() as session:
 
     for categoria in categoria_orfa:
         print(categoria.nome)
+    """
 
+    relatorio_vendas = session.query(
+        Produto.categoria_id,
+        func.avg(Produto.preco).label('media_preco'),
+        func.count(Produto.id).label('total_produto')
+        ).group_by(Produto.categoria_id)\
+        .having(func.avg(Produto.preco) > 250)\
+        .all()
 
-
+    for id_categoria, media_preco , estoque in relatorio_vendas:
+        print(f"Id Categoria: {id_categoria} | Estoque: {estoque} | Média de preços: {media_preco:.2f}")
+    
 
 
     session.commit()

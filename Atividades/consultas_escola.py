@@ -52,6 +52,7 @@ with Session() as session:
     else:
         print("A turma não possui alunos.")
 
+    """
     tamanho_pagina = 10
     pagina_atual = 3
 
@@ -65,7 +66,30 @@ with Session() as session:
         .offset((pagina_atual - 1) * tamanho_pagina)\
         .all()
     print(f"O total de alunos é igual a {total_alunos}")
-    print(ordenados)
-    print(alunos_paginados)
 
+    for estudante in alunos_paginados:
+        print(f"Nome: {estudante.nome} | Matricula: {estudante.matricula}")
+    
+    for aluno in ordenados:
+        print(aluno.nome)
+
+
+    aluno_turma = session.query(Aluno, Turma)\
+        .outerjoin(Turma, Aluno.turma_id == Turma.id)\
+        .all()
+
+    for aluno, turma in aluno_turma:
+        nome_turma = turma.nome_turma if turma else "Sem Turma"
+        print(f"Aluno: {aluno.nome} | Turma: {nome_turma}")
+    """
+
+
+    aluno_sem_turma = session.query(Aluno)\
+    .outerjoin(Turma, Aluno.turma_id == Turma.id)\
+    .filter(Turma.id == None)\
+    .all()
+
+
+    for aluno in aluno_sem_turma:
+        print(aluno.nome)
     session.commit()
