@@ -119,7 +119,6 @@ with Session() as session:
     #)
 
 
-
     for aluno, idade in calculo_idade.all():
         print(f"Nome: {aluno.nome} | Data de nascimento: {aluno.data_nascimento} | Idade aproximada: {idade}")
 
