@@ -18,3 +18,10 @@ result = r.get('foo')
 print(result)
 # >>> bar
 
+r.set('nome', 'Robert')
+r.set('contador', 10)
+r.decrby('contador')
+
+print(r.get('nome'))
+print(r.exists('nome'))
+print(r.get('contador'))
