@@ -18,10 +18,22 @@ result = r.get('foo')
 print(result)
 # >>> bar
 
-r.set('nome', 'Robert')
-r.set('contador', 10)
-r.decrby('contador')
+#Questão 1 - Lista de tarefas
+"""
 
-print(r.get('nome'))
-print(r.exists('nome'))
-print(r.get('contador'))
+r.rpush('fila', 'Tarefa2 Jales')
+#r.rpop('fila')
+print(r.lrange('fila', 0, -1))
+
+
+#Questão 2 - Ranking 
+
+r.zadd('ranking', {'Dante': 810, 'Samuel': 900})
+print(r.zrange('ranking', 0, -1, withscores=True))
+
+
+#Questão 3 - Contador
+
+contador = r.incr('contador')
+print(contador)
+"""
