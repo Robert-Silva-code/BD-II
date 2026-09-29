@@ -41,10 +41,29 @@ def contador_pagina():
     print(contador)
 
 contador_pagina()
-"""
 
 #Questão 4 - Sistema de amigos online
 
-r.sadd('usuarios_online', 'Robert: 401')
-#print(r.srem('usuarios_online'))
+
+while True:
+    menu = input("O que você quer fazer (1 - Fazer Login, 2 - Verificar usuários online, 3 - Fazer Logout, 4 - Desligar): ")
+    if menu == "1":
+        login = input("Digite seu ID: ")
+        r.sadd('usuarios_online', login)
+    elif menu == "2":
+        print(r.smembers('usuarios_online'))
+    elif menu == "3":
+        logout = input("Digite o seu ID: ")
+        r.srem('usuarios_online', logout)
+    elif menu == "4":
+        break
+    else:
+        print("Opção inválida")
+
+
 print(r.smembers('usuarios_online'))
+"""
+
+#Questão 5 - Contador de acessos
+
+
