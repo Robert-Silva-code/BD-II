@@ -65,5 +65,14 @@ print(r.smembers('usuarios_online'))
 """
 
 #Questão 5 - Contador de acessos
+usuario = "403"
+chave = f"rate_limit:{usuario}"
+requisicoes = r.incr(chave)
 
+if requisicoes == 1:
+    r.expire(chave, 60)
 
+if requisicoes > 10:
+    print(f"Acesso bloqueado! Tente novamente em {r.ttl(chave)}")
+else:
+    print(f"Ação permitida.")
