@@ -62,7 +62,6 @@ while True:
 
 
 print(r.smembers('usuarios_online'))
-"""
 
 #Questão 5 - Contador de acessos
 usuario = "403"
@@ -76,3 +75,22 @@ if requisicoes > 10:
     print(f"Acesso bloqueado! Tente novamente em {r.ttl(chave)}")
 else:
     print(f"Ação permitida.")
+"""
+
+#Questão 6 - Operações com conjuntos
+r.sadd('usuario:seguidores', '402', '401', '004', '510')
+r.sadd('usuario:seguindo', '402', '004', '404')
+print(f"Total seguindo no começo: {r.smembers('usuario:seguindo')}")
+
+
+amigos_comum = r.sinter('usuario:seguidores', 'usuario:seguindo')
+print(f"Amigos em comum: {amigos_comum}")
+
+contato_unico = r.sunion('usuario:seguidores', 'usuario:seguindo')
+print(f"Contatos unicos: {contato_unico}")
+
+seguindo_dif = r.sdiff('usuario:seguindo', 'usuario:seguidores')
+print(f"Você segue mas não te segue de volta: {seguindo_dif}")
+
+r.srem('usuario:seguindo', '404')
+print(f"Total seguindo no final: {r.smembers('usuario:seguindo')}")
